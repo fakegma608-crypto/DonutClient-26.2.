@@ -30,6 +30,13 @@ jobs:
       - name: Extract source ZIP
         run: unzip DonutClient-26.2-source.zip
 
+      - name: Fix Minecraft 26.2 build configuration
+        working-directory: DonutClient-26.2
+        shell: bash
+        run: |
+          sed -i '/mappings loom\.officialMojangMappings()/d' build.gradle
+          sed -i 's/modImplementation /implementation /g' build.gradle
+
       - name: Build mod
         working-directory: DonutClient-26.2
         run: gradle build --no-daemon
@@ -40,3 +47,4 @@ jobs:
           name: DonutClient-JAR
           path: DonutClient-26.2/build/libs/*.jar
           if-no-files-found: error
+concurrency: 
